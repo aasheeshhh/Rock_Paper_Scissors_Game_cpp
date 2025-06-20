@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <ctime>
+#include <cctype>
 
 using std::cout;
 using std::cin;
@@ -10,77 +11,80 @@ using std::string;
 
 char get_user_choice();
 char get_computer_choice();
-void show_choice();
+void show_choice(char player_choice ,char computer_choice);
+void show_winner(char player_choice ,char computer_choice);
 
 
 int main (){
+
+	srand(time(0));
+	string player_name;
+
+    cout<<"Rock paper scissior game:\n";
+	cout<<"enter players name\n";
+	cin>>player_name;
+
+    char player_choice = get_user_choice();
+	char computer_choice = get_computer_choice();
 	
-
-   cout<<"Rock paper scissior game:\n";
-	get_user_choice();
-	get_computer_choice();
-	show_choice();
-
+	show_choice(player_choice ,computer_choice);
+	show_winner(player_choice ,computer_choice);
 
 	return 0;
-
 }
 
-char get_user_choice(){
-	string player ;
-	char player_choice ;
-	cout<<"enter players name\n";
-	cin>>player;
+char get_user_choice(){ 
+	char player_choice;
 	do{		
-		cout<<R"(Enter choice
+ cout<<R"(Enter choice
 r = rock 
 p = paper
-s = scissior
+s = scissor
 )";
+	
 	cin>>player_choice;
-    }
-	while(player_choice != 'r' && player_choice != 'p' && player_choice != 's');
-		return player_choice;}
+	player_choice = tolower(player_choice);
+
+    }while(player_choice != 'r' && player_choice != 'p' && player_choice != 's');
+
+	return player_choice;
+}
 
 char get_computer_choice(){
-	srand(time(0));
-
-	char computer_choice = (rand() % 3)+1;
-
-   switch(computer_choice)
-   {
-   case 1:cout<<"R\n"; break;
-   case 2:cout<<"P\n"; break;
-   case 3:cout<<"S\n"; break;
-   }
-
-    return computer_choice;}
-
-void show_choice(){
-do{
-	if(get_user_choice() == 'r' && get_computer_choice() =='S'){
-		cout<<"You won\n";
+	char computer_choice;
+	int Random_number = (rand() % 3)+1;
+	if(Random_number==1){
+		computer_choice = 'r';
+		cout<<computer_choice<<'\n';
 	}
-	else if(get_user_choice() == 's' && get_computer_choice() =='R'){
-		cout<<"You loose\n";
+	else if(Random_number==2){
+		computer_choice = 'p';
+		cout<<computer_choice<<'\n';
 	}
-	else if(get_user_choice() == 'p' && get_computer_choice() =='S'){
-		cout<<"You loose\n";
+	else{
+		computer_choice = 's';
+		cout<<computer_choice<<'\n';		
+	} 
+	return computer_choice;
+}
+
+void show_choice(char player_choice ,char computer_choice){
+	cout<<"computer choose: "<<computer_choice<<'\n';
+	cout<<"You choose: "<<player_choice<<'\n';
+}
+
+void show_winner(char player_choice ,char computer_choice){
+    if(player_choice==computer_choice){
+		cout<<"Draw\n";
 	}
-	else if(get_user_choice() == 's' && get_computer_choice() =='P'){
-		cout<<"You won\n";
-	}
-	else if(get_user_choice() == 'r' && get_computer_choice() =='P'){
-		cout<<"You loose\n";
-	}
-	else if(get_user_choice() == 'P' && get_computer_choice() =='r'){
-		cout<<"You won\n";
+	else if((player_choice=='r'&& computer_choice=='s')||
+	       (player_choice=='p'&& computer_choice=='r')||
+		   (player_choice=='s'&& computer_choice=='p')){
+	cout<<"You Won\n";
+    }
+	else{
+		cout<<"You Lost\n";
 	}
 
- }while(get_user_choice == get_computer_choice);
-    cout<<"tie\n";
-
- return show_choice();}
-
-
+}
 
